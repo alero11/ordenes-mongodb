@@ -4,6 +4,7 @@ import org.service.orden.model.Order;
 import org.service.orden.request.OrderRequest;
 import org.service.orden.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,8 +19,9 @@ public class OrderController {
 
 
     @GetMapping
-    public List<Order> getAllOrders() {
-        return service.getAllOrders();
+    public ResponseEntity<List<Order>>  getAllOrders() {
+        List<Order> orders = service.getAllOrders();
+        return new ResponseEntity<>(orders,HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -30,8 +32,9 @@ public class OrderController {
     }
 
     @PostMapping
-    public Order createOrder(@RequestBody OrderRequest order) {
-        return service.createOrder(order);
+    public ResponseEntity<Order>  createOrder(@RequestBody OrderRequest order) {
+        Order response = service.createOrder(order);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")

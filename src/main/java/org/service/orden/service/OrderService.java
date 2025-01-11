@@ -1,5 +1,6 @@
 package org.service.orden.service;
 
+import org.service.orden.exception.OrderNotFoundException;
 import org.service.orden.model.Order;
 import org.service.orden.repository.OrderRepository;
 import org.service.orden.request.OrderRequest;
@@ -20,7 +21,11 @@ public class OrderService {
     }
 
     public Optional<Order> getOrderById(String id) {
-        return repository.findById(id);
+        Order order = repository.findById(id).orElse(null);
+        if(order == null){
+            throw new OrderNotFoundException(id);
+        }
+        return Optional.ofNullable(order);
     }
 
     public Order createOrder(OrderRequest request) {
